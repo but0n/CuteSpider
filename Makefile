@@ -13,3 +13,4 @@ src:
 
 clean:
 	@$(MAKE) -C src $@
+	rm -rf app.bin

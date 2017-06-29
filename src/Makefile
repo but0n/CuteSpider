@@ -1,22 +1,21 @@
 TC=
 CC=@echo "CC $@";$(TC)gcc
-AR=$(TC)ar
+AR=@echo "AR $@";$(TC)ar
 
 LIBDIR=-I.
 COMMONFLAGS=-Wall -std=c99
 
-LIDLIBS+=-lm
 
 CFLAGS=$(COMMONFLAGS) $(LIBDIR)
 
 TARG = $(subst .c,.o,$(wildcard *.c))
 
-src:$(TARG)
+src:app.a
+	$(CC) $(CFLAGS) -o ../app.bin $^
 
-%.a:%.o
-	@echo "AR $@"
-	@$(AR) cr $@ $<
+app.a:$(TARG)
+	@$(AR) cr $@ $^
 
 .PHONY: clean
 clean:
-	rm -rf $(TARG)
+	rm -rf $(TARG) *.a app.bin
