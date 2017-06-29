@@ -1,4 +1,4 @@
-TARGET=../server.out
+TARGET=../user.out
 TC=
 CC=@echo "CC $@";$(TC)gcc
 AR=@echo "AR $@";$(TC)ar
@@ -11,7 +11,7 @@ CFLAGS=$(COMMONFLAGS) $(LIBDIR)
 
 TARG = $(subst .c,.o,$(wildcard *.c))
 
-src:app.a
+client:app.a
 	$(CC) $(CFLAGS) -o $(TARGET) $^
 
 app.a:$(TARG)

@@ -53,7 +53,7 @@ int main(int argc, char const *argv[]) {
 	}
 
 	// Set up listen
-	if(listen(sock_fd, MAX_CLIENT_NUM)) {
+	if(listen(sock_fd, MAX_CLIENT_NUM) == 0) {
 		print("Success to listen!\n");
 	} else {
 		print("Failed to listen!\n");
