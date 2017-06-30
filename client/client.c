@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]) {
 	int sock_fd;
 	struct sockaddr serv_addr;
 
-	char *buff[MAX_COMMAND] = {"abc, def, test, hello, quit"};
+	char *buff[MAX_COMMAND] = {"abc", "def", "test", "hello", "quit"};
 	char tmp_buff[100];
 
 	// Create socket
@@ -49,7 +49,7 @@ int main(int argc, char const *argv[]) {
 		tmp_buff[n] = '\0';
 		print("data send: %s reveive: %s\n", buff[i], tmp_buff);
 
-		if(strncmp(tmp_buff, "quit", 4))
+		if(strncmp(tmp_buff, "quit", 4) == 0)
 			break;
 	}
 

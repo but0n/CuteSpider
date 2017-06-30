@@ -63,23 +63,42 @@ int main(int argc, char const *argv[]) {
 
 	// Cearte socket for listen
 	len = sizeof(clientAdd);
-	clientfd = accept(sock_fd, (struct sockaddr *)&clientAdd,  &len);
-	if(clientfd <= 0) {
-		print("Failed to accept!\n");
-		close(sock_fd);
-		return 1;
+	while(1) {
+		clientfd = accept(sock_fd, (struct sockaddr *)&clientAdd,  &len);
+		if(clientfd <= 0) {
+			print("Failed to accept!\n");
+			close(sock_fd);
+			return 1;
+		}
+		int pid = fork();
+		if(pid > 0) {
+			// Parent MAIN process
+			print("Host is still listening...\nChild: %d\n", pid);
+
+		} else if(pid == 0) {
+			// Child process
+			while(1) {
+				n = recv(clientfd, buff, 100, 0);
+				buff[n] = '\0';
+				print("[%d]\tNumber of receive bytes = %d data = %s\n", getpid(), n, buff);
+
+				fflush(stdout);
+				send(clientfd, buff, n, 0);
+
+				if(strncmp(buff, "quit", 4) == 0) {
+					close(clientfd);
+					close(sock_fd);
+					print("[%d]\tChild is over!\n", getpid());
+					return 0;
+				}
+			}
+		} else {
+			print("Failed to fork!\n");
+			close(clientfd);
+			close(sock_fd);
+			return 1;
+		}
+
 	}
-
-	// Handle request
-	n = recv(clientfd, buff, 100, 0);
-	buff[n] = '\0';
-	print("Number of receive bytes = %d data = %s\n", n, buff);
-
-	fflush(stdout);
-	send(clientfd, buff, n, 0);
-
-	close(clientfd);
-	close(sock_fd);
-
 	return 0;
 }

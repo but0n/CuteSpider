@@ -1,4 +1,4 @@
-TARGET=../user.out
+TARGET=../usr.out
 TC=
 CC=@echo "CC $@";$(TC)gcc
 AR=@echo "AR $@";$(TC)ar
