@@ -71,15 +71,12 @@ int main(int argc, char const *argv[]) {
 	}
 
 	// Handle request
-	n = recv(clientfd, buff, 100, 0)
+	n = recv(clientfd, buff, 100, 0);
 	buff[n] = '\0';
 	print("Number of receive bytes = %d data = %s\n", n, buff);
 
 	fflush(stdout);
 	send(clientfd, buff, n, 0);
-
-	if(strncmp(buff, "quit", 4))
-		break;
 
 	close(clientfd);
 	close(sock_fd);
