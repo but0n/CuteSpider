@@ -6,7 +6,7 @@
 #define print			printf
 
 #define ECHO_PORT		8080
-#define MAX_COMMAND		10
+#define MAX_COMMAND		1
 
 int main(int argc, char const *argv[]) {
 	int sock_fd;
@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
 		print("Failed to create socket!\n");
 		return 1;
 	} else {
-		print("Success to cearte socket!\n");
+		print("Success to cearte socket %d\n", sock_fd);
 	}
 
 	// Set up address
