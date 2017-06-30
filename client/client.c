@@ -6,7 +6,7 @@
 #define print			printf
 
 #define ECHO_PORT		8080
-#define MAX_COMMAND		1
+#define MAX_COMMAND		5
 
 int main(int argc, char const *argv[]) {
 	int sock_fd;
@@ -29,10 +29,10 @@ int main(int argc, char const *argv[]) {
 	serv_addr.sa_data[0]	= 0x1F;
 	serv_addr.sa_data[1]	= 0x90;	// Port: 8080
 	// IP: 127.0.0.1 - 7F:00:00:01
-	serv_addr.sa_data[2]	= 0x00;
+	serv_addr.sa_data[2]	= 127;
 	serv_addr.sa_data[3]	= 0x00;
 	serv_addr.sa_data[4]	= 0x00;
-	serv_addr.sa_data[5]	= 0x00;
+	serv_addr.sa_data[5]	= 1;
 
 	// Connect to server
 	if(connect(sock_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == 0) {

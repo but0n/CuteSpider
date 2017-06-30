@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
 	socklen_t len;
 	int n;
 
-	// Create socket
+	// Create socket file description
 	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock_fd == -1) {
 		print("Failed to create socket!\n");
@@ -35,10 +35,10 @@ int main(int argc, char const *argv[]) {
 	serv_addr.sa_data[0]	= 0x1F;
 	serv_addr.sa_data[1]	= 0x90;	// Port: 8080
 	// IP: 127.0.0.1 - 7F:00:00:01
-	serv_addr.sa_data[2]	= 0x00;
+	serv_addr.sa_data[2]	= 127;
 	serv_addr.sa_data[3]	= 0x00;
 	serv_addr.sa_data[4]	= 0x00;
-	serv_addr.sa_data[5]	= 0x00;
+	serv_addr.sa_data[5]	= 1;
 
 	// serv_addr.sin_post			= htons(ECHO_PORT);
 	// serv_addr.sin_addr.s_addr	= htons(INADDR_ANY);
@@ -71,16 +71,16 @@ int main(int argc, char const *argv[]) {
 	}
 
 	// Handle request
-	while((n = recv(clientfd, buff, 100, 0))) {
-		buff[n] = '\0';
-		print("Number of receive bytes = %d data = %s\n", n, buff);
+	n = recv(clientfd, buff, 100, 0)
+	buff[n] = '\0';
+	print("Number of receive bytes = %d data = %s\n", n, buff);
 
-		fflush(stdout);
-		send(clientfd, buff, n, 0);
+	fflush(stdout);
+	send(clientfd, buff, n, 0);
 
-		if(strncmp(buff, "quit", 4))
-			break;
-	}
+	if(strncmp(buff, "quit", 4))
+		break;
+
 	close(clientfd);
 	close(sock_fd);
 
