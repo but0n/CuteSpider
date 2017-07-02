@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]) {
 	int sock_fd;
 	struct sockaddr serv_addr;
 
-	char *buff[MAX_COMMAND] = {"abc", "def", "test", "hello", "qut"};
+	char *buff[MAX_COMMAND] = {"abc", "def", "test", "hello", "quit"};
 	char tmp_buff[100];
 
 	// Create socket
