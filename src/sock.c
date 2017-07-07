@@ -8,7 +8,7 @@
 
 static char buff[1024];
 
-#define print			printf
+#define print	printf
 
 int socketServer(unsigned short port) {
 	struct sockaddr local = {
@@ -43,8 +43,8 @@ int socketServer(unsigned short port) {
 }
 
 int handleServer(int fd) {
-	struct sockaddr cltAddr;
-	socklen_t len = sizeof(cltAddr);
+	struct sockaddr 	cltAddr;
+	socklen_t 			len = sizeof(cltAddr);
 
 	int cltfd = accept(fd, (struct sockaddr *)&cltAddr, &len);
 	if(cltfd <= 0) {
