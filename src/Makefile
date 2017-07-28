@@ -4,7 +4,6 @@ CC=@echo "CC $@";$(TC)gcc
 AR=@echo "AR $@";$(TC)ar
 
 LIBDIR=-I.
-# LIBDIR+=-lcurl
 COMMONFLAGS=-Wall -std=c99
 
 
