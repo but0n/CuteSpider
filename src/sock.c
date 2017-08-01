@@ -6,6 +6,9 @@
 #include <string.h>
 #include <unistd.h>
 
+#define print			printf
+#define MAX_CLIENT_NUM	3
+
 const char	rep[] =
 "HTTP/1.1 200 OK\r\n"
 "Content-type: text/html; charset=UTF-8\r\n\r\n"
