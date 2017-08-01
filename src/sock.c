@@ -6,53 +6,55 @@
 #include <string.h>
 #include <unistd.h>
 
-static char buff[2048];
 const char	rep[] =
 "HTTP/1.1 200 OK\r\n"
 "Content-type: text/html; charset=UTF-8\r\n\r\n"
 "<html>hello</html>";
 
-#define print	printf
+static int fd_host;
 
-int socketServer(unsigned short port) {
+void socketServer(unsigned short port) {
+	// File descriptor
+	fd_host = socket(AF_INET, SOCK_STREAM, 0);	// TCP
+	if(fd_host == -1) {
+		exit(1);
+	}
+
+	// Address
 	struct sockaddr local = {
-		.sa_family = AF_INET,
-		.sa_data[0] = (unsigned char)(port>>8 & 0xFF),
-		.sa_data[1] = (unsigned char)(port & 0xFF),
-		.sa_data[2] = 127,
-		.sa_data[3] = 0,
-		.sa_data[4] = 0,
-		.sa_data[5] = 1
+		.sa_family	= AF_INET,
+		.sa_data[0]	= (unsigned char)(port>>8 & 0xFF),
+		.sa_data[1]	= (unsigned char)(port & 0xFF),
+		.sa_data[2]	= 127,
+		.sa_data[3]	= 0,
+		.sa_data[4]	= 0,
+		.sa_data[5]	= 1
 	};
-	int fd = socket(AF_INET, SOCK_STREAM, 0);	// TCP
-	if(fd == -1)
-		return -1;
-	if(bind(fd, (struct sockaddr *)&local, sizeof(local)) == 0) {
-		print("Success to bind address!\n");
-	} else {
-		print("Failed to bind address!\n");
-		close(fd);
-		return -1;
+
+	// Bind Address
+	if(bind(fd_host, (struct sockaddr *)&local, sizeof(local)) == -1) {
+		print("Failed to bind address!\n\n");
+		close(fd_host);
+		exit(1);
 	}
 
 	// Set up listen
-	if(listen(fd, MAX_CLIENT_NUM) == 0) {
-		print("Success to listen!\n");
+	if(listen(fd_host, MAX_CLIENT_NUM) == 0) {
+		print("Success to initial server, listening at %d:\n\n", port);
 	} else {
-		print("Failed to listen!\n");
-		close(fd);
-		return -1;
+		print("Failed to listen!\n\n");
+		close(fd_host);
+		exit(1);
 	}
-	return fd;
 }
 
-int handleServer(int fd) {
+int handleServer() {
 	struct sockaddr 	cltAddr;
 	socklen_t 			len = sizeof(cltAddr);
 
-	int cltfd = accept(fd, (struct sockaddr *)&cltAddr, &len);
+	int cltfd = accept(fd_host, (struct sockaddr *)&cltAddr, &len);
 	if(cltfd == -1) {
-		print("Failed to accept!\n");
+		print("Failed to accept!\n\n");
 		close(cltfd);
 		return 0;
 	}
@@ -61,26 +63,29 @@ int handleServer(int fd) {
 	if(pid > 0) {
 		// Parent MAIN process
 		close(cltfd);
-		print("Host is still listening...\nChild: %d\n", pid);
+		print("Host is still listening...\nPID: %d\n\n", pid);
 
 	} else if(pid == 0) {
 		// Child process
+		char buff[2048];
 		int n = recv(cltfd, buff, 2047, 0);
 		buff[n] = '\0';
 		print("%s\n", buff);
-		if(!strncmp(buff, "GET /favicon.ico", 16)) {
-
-		} else {
+		if(!strncmp(buff, "GET / ", 6)) {
 			send(cltfd, rep, sizeof(rep)-1, 0);
 		}
 		close(cltfd);
-		close(fd);
+		// close(fd_host);
 		exit(0);
 	} else {
 		print("Failed to fork!\n");
 		close(cltfd);
-		close(fd);
+		close(fd_host);
 		return 0;
 	}
 	return 1;
+}
+
+void runServer() {
+	while(handleServer());
 }

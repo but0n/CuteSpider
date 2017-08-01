@@ -1,20 +1,13 @@
 
-SRCTARGET=core.o
 
-all:src client
+all:src
 	@echo "Finished"
 
-.PHONY: clean src client
+.PHONY: clean src
 
 src:
 	@echo "Compiling $@"
 	@$(MAKE) -C $@ $@
 
-client:
-	@echo "Compiling $@"
-	@$(MAKE) -C $@ $@
-
-
 clean:
 	@$(MAKE) -C src $@
-	@$(MAKE) -C client $@
