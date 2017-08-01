@@ -6,7 +6,11 @@
 #include <string.h>
 #include <unistd.h>
 
-static char buff[1024];
+static char buff[2048];
+const char	rep[] =
+"HTTP/1.1 200 OK\r\n"
+"Content-type: text/html; charset=UTF-8\r\n\r\n"
+"<html>hello</html>";
 
 #define print	printf
 
@@ -47,7 +51,7 @@ int handleServer(int fd) {
 	socklen_t 			len = sizeof(cltAddr);
 
 	int cltfd = accept(fd, (struct sockaddr *)&cltAddr, &len);
-	if(cltfd <= 0) {
+	if(cltfd == -1) {
 		print("Failed to accept!\n");
 		close(cltfd);
 		return 0;
@@ -61,25 +65,17 @@ int handleServer(int fd) {
 
 	} else if(pid == 0) {
 		// Child process
-		while(1) {
-			int n;
-			while((n = recv(cltfd, buff, 100, 0)) > 0) {
-				buff[n] = '\0';
-				print("[%d]\tNumber of receive bytes = %d data = %s\n", getpid(), n, buff);
+		int n = recv(cltfd, buff, 2047, 0);
+		buff[n] = '\0';
+		print("%s\n", buff);
+		if(!strncmp(buff, "GET /favicon.ico", 16)) {
 
-				fflush(stdout);
-				send(cltfd, buff, n, 0);
-
-				if(strncmp(buff, "quit", 4) == 0) {
-					close(cltfd);
-					close(fd);
-					print("[%d]\tChild is over!\n", getpid());
-					break;
-				}
-
-			}
-			exit(0);
+		} else {
+			send(cltfd, rep, sizeof(rep)-1, 0);
 		}
+		close(cltfd);
+		close(fd);
+		exit(0);
 	} else {
 		print("Failed to fork!\n");
 		close(cltfd);
