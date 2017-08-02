@@ -6,7 +6,7 @@
 //
 //	After receiving and interpreting a request message, a server responds with an HTTP response message.
 //
-//	Response	=	Status-Line; Section 6.1
+//	Response	=	Status-Line					; Section 6.1
 //					*(( general-header			; Section 4.5
 //					 | response-header			; Section 6.2
 //					 | entity-header ) CRLF)	; Section 7.1
