@@ -5,9 +5,10 @@
 #include "http.h"
 
 const char	rep[] =
- "HTTP/1.1 200 OK\r\n"
- "Content-type: text/html; charset=UTF-8\r\n\r\n"
- "<html>hello</html>";
+"HTTP/1.1 200 OK\r\n"
+"Content-type: text/html; charset=UTF-8\r\n\r\n"
+"<html>hello</html>";
+
 void test(int *fd_user) {
 	send(*fd_user, rep, sizeof(rep), 0);
 }
