@@ -1,11 +1,8 @@
 #include "route.h"
 #include <stdio.h>
 
-#define STACK_LEN		1024
-#define PATH_MAX_LEN	2038
-
 st_path	stack[STACK_LEN];
-long	sp = -1;
+long		sp = -1;
 
 #define NEW() do{\
 	stack[++sp].handler = NULL;\
@@ -31,4 +28,16 @@ int route(char *c, void (*func)()) {
 	}
 	this->handler = func;
 	return 0;
+}
+
+void parse(char *token, pst_path this) {
+	if(this->hash[*token-'!'] == NULL) {
+		printf("Error path!\n");
+	} else if(*(token+1)) {
+		parse(token+1, this->hash[*token-'!']);
+	} else if(this->hash[*token-'!']->handler != NULL) {
+		this->hash[*token-'!']->handler();
+	} else {
+		printf("Error handler");
+	}
 }
