@@ -1,7 +1,7 @@
 #include "route.h"
 #include <stdio.h>
 
-st_path	stack[STACK_LEN];
+st_path		stack[STACK_LEN];
 long		sp = -1;
 
 #define NEW() do{\
@@ -30,13 +30,13 @@ int route(char *c, void (*func)()) {
 	return 0;
 }
 
-void parse(char *token, pst_path this) {
+void parse(int *fd, char *token, pst_path this) {
 	if(this->hash[*token-'!'] == NULL) {
 		printf("Error path!\n");
-	} else if(*(token+1)) {
-		parse(token+1, this->hash[*token-'!']);
+	} else if(*(token+1) != ' ') {
+		parse(fd, token+1, this->hash[*token-'!']);
 	} else if(this->hash[*token-'!']->handler != NULL) {
-		this->hash[*token-'!']->handler();
+		this->hash[*token-'!']->handler(fd);
 	} else {
 		printf("Error handler");
 	}

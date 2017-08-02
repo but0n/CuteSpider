@@ -6,10 +6,13 @@
 
 typedef struct path{
 	struct path *hash[90];
-	void (*handler)();
+	void (*handler)(int*);
 } st_path, *pst_path;
 
+extern st_path	stack[STACK_LEN];
+
+
 int route(char *c, void (*func)());
-void parse(char *token, pst_path this);
+void parse(int *fd, char *token, pst_path this);
 
 #endif

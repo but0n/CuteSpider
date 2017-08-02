@@ -6,7 +6,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#define print			printf
+#include "route.h"
+
 #define MAX_CLIENT_NUM	3
 
 
@@ -32,16 +33,16 @@ void socketServer(unsigned short port) {
 
 	// Bind Address
 	if(bind(fd_host, (struct sockaddr *)&local, sizeof(local)) == -1) {
-		print("Failed to bind address!\n\n");
+		printf("Failed to bind address!\n\n");
 		close(fd_host);
 		exit(1);
 	}
 
 	// Set up listen
 	if(listen(fd_host, MAX_CLIENT_NUM) == 0) {
-		print("Success to initial server, listening at %d:\n\n", port);
+		printf("Success to initial server, listening at %d:\n\n", port);
 	} else {
-		print("Failed to listen!\n\n");
+		printf("Failed to listen!\n\n");
 		close(fd_host);
 		exit(1);
 	}
@@ -53,7 +54,7 @@ int handleServer() {
 
 	int cltfd = accept(fd_host, (struct sockaddr *)&cltAddr, &len);
 	if(cltfd == -1) {
-		print("Failed to accept!\n\n");
+		printf("Failed to accept!\n\n");
 		close(cltfd);
 		return 0;
 	}
@@ -62,22 +63,20 @@ int handleServer() {
 	if(pid > 0) {
 		// Parent MAIN process
 		close(cltfd);
-		print("Host is still listening...\nPID: %d\n\n", pid);
+		printf("Host is still listening...\nPID: %d\n\n", pid);
 
 	} else if(pid == 0) {
 		// Child process
 		char buff[2048];
 		int n = recv(cltfd, buff, 2047, 0);
 		buff[n] = '\0';
-		print("%s\n", buff);
-		if(!strncmp(buff, "GET / ", 6)) {
-			send(cltfd, REP, sizeof(REP)-1, 0);
-		}
+		printf("%s\n", buff);
+		parse(&cltfd, strchr(buff, '/'), stack);
 		close(cltfd);
 		// close(fd_host);
 		exit(0);
 	} else {
-		print("Failed to fork!\n");
+		printf("Failed to fork!\n");
 		close(cltfd);
 		close(fd_host);
 		return 0;
