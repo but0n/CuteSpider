@@ -9,10 +9,6 @@
 #define print			printf
 #define MAX_CLIENT_NUM	3
 
-const char	rep[] =
-"HTTP/1.1 200 OK\r\n"
-"Content-type: text/html; charset=UTF-8\r\n\r\n"
-"<html>hello</html>";
 
 static int fd_host;
 
@@ -75,7 +71,7 @@ int handleServer() {
 		buff[n] = '\0';
 		print("%s\n", buff);
 		if(!strncmp(buff, "GET / ", 6)) {
-			send(cltfd, rep, sizeof(rep)-1, 0);
+			send(cltfd, REP, sizeof(REP)-1, 0);
 		}
 		close(cltfd);
 		// close(fd_host);

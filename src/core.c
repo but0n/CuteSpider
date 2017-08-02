@@ -9,10 +9,10 @@ void test() {
 }
 
 int main(int argc, char const *argv[]) {
-	// socketServer(1313);
-	// // Cearte socket for listen
-	// runServer();
-	route("/test", test);
-	parse("/test", &stack[0]);
+	socketServer(1313);
+	// Cearte socket for listen
+	runServer();
+	// route("/test", test);
+	// parse("/test", &stack[0]);
 	return 0;
 }
