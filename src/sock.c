@@ -65,15 +65,16 @@ int handleServer() {
 		close(cltfd);
 		printf("Host is still listening...\nPID: %d\n\n", pid);
 
-	} else if(pid == 0) {
-		// Child process
+	} else if(pid == 0) {	// Child process
+		// Receiv Request message
 		char buff[2048];
 		int n = recv(cltfd, buff, 2047, 0);
 		buff[n] = '\0';
 		printf("%s\n", buff);
+		// Send Response message
 		parse(&cltfd, strchr(buff, '/'), stack);
 		close(cltfd);
-		// close(fd_host);
+		close(fd_host);
 		exit(0);
 	} else {
 		printf("Failed to fork!\n");
