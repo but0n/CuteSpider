@@ -60,8 +60,17 @@
 #define HTTP_STATUS_LINE_GatewayTimeout					HTTP_VERSION"504 Gateway Time-out"
 #define HTTP_STATUS_LINE_HTTPVersionnotsupported		HTTP_VERSION"505 HTTP Version not supported"
 
-#define HTTP_GENERAL_HEADER								"Content-type: text/html; charset=UTF-8"
+#define HTTP_GENERAL_HEADER				""
 
-#define HTTP_RESPONSE_HEADERS(status)						status CRLF HTTP_GENERAL_HEADER CRLF CRLF
+#define HTTP_RESPONSE_HEADER			"Server: but0n's web server"CRLF
+
+#define HTTP_ENTITY_HEADER				"Content-type: text/html; charset=utf-8"CRLF
+
+#define HTTP_RESPONSE(status)			status\
+										CRLF\
+										HTTP_GENERAL_HEADER\
+										HTTP_RESPONSE_HEADER\
+										HTTP_ENTITY_HEADER\
+										CRLF
 
 #endif
