@@ -72,7 +72,7 @@ int handleServer() {
 		buff[n] = '\0';
 		printf("%s\n", buff);
 		// Send Response message
-		parse(&cltfd, strchr(buff, '/'), stack);
+		parse(strchr(buff, '/'), stack)(&cltfd);
 		close(cltfd);
 		close(fd_host);
 		exit(0);

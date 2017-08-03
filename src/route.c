@@ -32,17 +32,19 @@ int route(char *c, void (*func)()) {
 	return 0;
 }
 
-void parse(int *fd, char *token, pst_path this) {
+func_handle parse(char *token, pst_path this) {
 	if((this->hash[*token-'!'] != NULL) && (*(token+1) != ' ')) {
-		parse(fd, token+1, this->hash[*token-'!']);
+		return parse(token+1, this->hash[*token-'!']);
 	} else if(this->hash[*token-'!']->handler != NULL) {
-		this->hash[*token-'!']->handler(fd);
+		return this->hash[*token-'!']->handler;
 	} else {
-		errorPage(fd);
+		return errorPage;
 	}
+	return NULL;
 }
 
 void errorPage(int *fd) {
+	printf("Erro\n");
 	send(*fd, HTTP_RESPONSE(HTTP_STATUS_LINE_NotFound), sizeof(HTTP_RESPONSE(HTTP_STATUS_LINE_NotFound))-1, 0);
 	send(*fd, "<html>Page Not Found</html>", sizeof("<html>Page Not Found</html>")-1, 0);
 }
