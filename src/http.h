@@ -62,6 +62,6 @@
 
 #define HTTP_GENERAL_HEADER								"Content-type: text/html; charset=UTF-8"
 
-#define HTTP_RESPONSE_HEADERS(status)						status CRLF HTTP_GENERAL_HEADER CRLF
+#define HTTP_RESPONSE_HEADERS(status)						status CRLF HTTP_GENERAL_HEADER CRLF CRLF
 
 #endif
