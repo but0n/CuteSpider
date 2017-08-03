@@ -1,13 +1,8 @@
 #include "sock.h"
 #include "route.h"
 #include <stdio.h>
-#include <sys/socket.h>
 #include "http.h"
 
-const char	rep[] =
-"HTTP/1.1 200 OK\r\n"
-"Content-type: text/html; charset=UTF-8\r\n\r\n"
-"<html>hello</html>";
 
 void test(int *fd_user) {
 	send(*fd_user, HTTP_RESPONSE(HTTP_STATUS_LINE_OK), sizeof(HTTP_RESPONSE(HTTP_STATUS_LINE_OK))-1, 0);
@@ -17,7 +12,7 @@ void test(int *fd_user) {
 int main(int argc, char const *argv[]) {
 	socketServer(1313);
 	// Cearte socket for listen
-	route("/", test);
+	route("/test", test);
 
 	runServer();
 	// parse("/test", &stack[0]);

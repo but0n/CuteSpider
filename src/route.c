@@ -1,4 +1,6 @@
 #include "route.h"
+#include "sock.h"
+#include "http.h"
 #include <stdio.h>
 
 st_path		stack[STACK_LEN];
@@ -31,13 +33,16 @@ int route(char *c, void (*func)()) {
 }
 
 void parse(int *fd, char *token, pst_path this) {
-	if(this->hash[*token-'!'] == NULL) {
-		printf("Error path!\n");
-	} else if(*(token+1) != ' ') {
+	if((this->hash[*token-'!'] != NULL) && (*(token+1) != ' ')) {
 		parse(fd, token+1, this->hash[*token-'!']);
 	} else if(this->hash[*token-'!']->handler != NULL) {
 		this->hash[*token-'!']->handler(fd);
 	} else {
-		printf("Error handler");
+		errorPage(fd);
 	}
+}
+
+void errorPage(int *fd) {
+	send(*fd, HTTP_RESPONSE(HTTP_STATUS_LINE_NotFound), sizeof(HTTP_RESPONSE(HTTP_STATUS_LINE_NotFound))-1, 0);
+	send(*fd, "<html>Page Not Found</html>", sizeof("<html>Page Not Found</html>")-1, 0);
 }

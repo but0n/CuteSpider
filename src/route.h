@@ -12,7 +12,8 @@ typedef struct path{
 extern st_path	stack[STACK_LEN];
 
 
-int route(char *c, void (*func)());
-void parse(int *fd, char *token, pst_path this);
+int		route(char *c, void (*func)());
+void	parse(int *fd, char *token, pst_path this);
+void	errorPage(int *fd);
 
 #endif

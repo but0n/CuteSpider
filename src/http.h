@@ -1,6 +1,6 @@
 #ifndef HTTP_H
 #define HTTP_H
-
+#include <sys/socket.h>
 
 //	From https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html
 //	Response
@@ -60,9 +60,9 @@
 #define HTTP_STATUS_LINE_GatewayTimeout					HTTP_VERSION"504 Gateway Time-out"
 #define HTTP_STATUS_LINE_HTTPVersionnotsupported		HTTP_VERSION"505 HTTP Version not supported"
 
-#define HTTP_GENERAL_HEADER				""
+#define HTTP_GENERAL_HEADER				"Cache-Control: no-cache"CRLF
 
-#define HTTP_RESPONSE_HEADER			"Server: but0n's web server"CRLF
+#define HTTP_RESPONSE_HEADER			"Server: J4F (Github/but0n)"CRLF
 
 #define HTTP_ENTITY_HEADER				"Content-type: text/html; charset=utf-8"CRLF
 
