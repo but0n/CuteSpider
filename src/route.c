@@ -25,8 +25,7 @@ int route(char *c, void (*func)()) {
 				return 1;
 			}
 		}
-		this = this->hash[*c-'!'];
-		c++;
+		this = this->hash[*c++ -'!'];
 	}
 	this->handler = func;
 	return 0;
